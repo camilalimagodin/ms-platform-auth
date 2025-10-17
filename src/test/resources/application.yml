@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: ms-platform-auth-test
+  
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+  
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/platform
+          jwk-set-uri: http://localhost:8080/realms/platform/protocol/openid-connect/certs
+
+server:
+  port: 0
+
+logging:
+  level:
+    org.springframework.security: INFO
