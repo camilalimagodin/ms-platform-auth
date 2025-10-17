@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: ms-platform-auth
+
+  docker:
+    compose:
+            file: ${DOCKER_HOME:ms-platform-auth/docker-compose.yml}
