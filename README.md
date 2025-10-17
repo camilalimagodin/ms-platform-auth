@@ -49,6 +49,12 @@ docker-compose up -d postgres keycloak
 
 ## Configuração do Keycloak
 
+Para instruções detalhadas sobre como configurar o Keycloak, incluindo criação de realm, clients, roles e usuários, consulte o guia completo:
+
+📖 **[KEYCLOAK_SETUP.md](KEYCLOAK_SETUP.md)**
+
+### Configuração Rápida
+
 Após iniciar o Keycloak, acesse: http://localhost:8080
 
 1. Faça login com as credenciais:
@@ -85,7 +91,29 @@ Após iniciar o Keycloak, acesse: http://localhost:8080
 ./gradlew test
 ```
 
+### Script de teste automatizado
+Use o script de teste para validar os endpoints:
+
+```bash
+# Testar endpoints públicos
+./scripts/test-api.sh
+
+# Testar com token JWT
+./scripts/test-api.sh YOUR_JWT_TOKEN
+```
+
 ### Obter token JWT do Keycloak
+
+#### Usando o script auxiliar
+```bash
+# Obter token para usuário admin
+./scripts/get-token.sh admin admin123
+
+# Obter token para outro usuário
+./scripts/get-token.sh user user123
+```
+
+#### Manualmente com curl
 ```bash
 curl -X POST 'http://localhost:8080/realms/platform/protocol/openid-connect/token' \
   -H 'Content-Type: application/x-www-form-urlencoded' \
