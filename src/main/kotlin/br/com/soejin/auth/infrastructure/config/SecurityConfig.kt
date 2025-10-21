@@ -19,14 +19,16 @@ import java.util.concurrent.ConcurrentHashMap
 @EnableWebSecurity
 class SecurityConfig {
 
-    @Value("\${auth-server-url}")
+    @Value("\${keycloak-admin.server-url}")
     private lateinit var keycloakBaseUrl: String
     private val authenticationManagers = ConcurrentHashMap<String, AuthenticationManager>()
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
+            .csrf { it.disable() }
             .authorizeHttpRequests { authorize ->
+                authorize.requestMatchers("/api/v1/register").permitAll()
                 authorize.anyRequest().authenticated()
             }
             .oauth2ResourceServer { oauth2 ->

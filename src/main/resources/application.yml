@@ -21,4 +21,9 @@ logging:
     org.springframework.web: INFO
     org.hibernate.SQL: DEBUG
 
-auth-server-url: ${KEYCLOAK_URL}:${KEYCLOAK_PORT}
+keycloak-admin:
+  server-url: ${KEYCLOAK_URL:http://localhost:8083}
+  realm: ${KEYCLOAK_ADMIN_REALM:master}
+  client-id: ${KEYCLOAK_ADMIN_CLIENT_ID:admin-cli}
+  username: ${KEYCLOAK_ADMIN:admin}
+  password: ${KEYCLOAK_ADMIN_PASSWORD:Adm1n_P@ssw0rd_2025!} # Reutilizando a senha!
