@@ -1,0 +1,226 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-10-20T20:27:00.000Z",
+  "__export_source": "gemini-laiane-dos-santos",
+  "resources": [
+    {
+      "_id": "wrk_framework_auth",
+      "parentId": null,
+      "modified": 1729466820000,
+      "created": 1729466820000,
+      "name": "Framework Auth Multi-Tenant",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "fld_tenant_a",
+      "parentId": "wrk_framework_auth",
+      "modified": 1729466821000,
+      "created": 1729466821000,
+      "name": "Tenant A",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -100,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_1_get_token_a",
+      "parentId": "fld_tenant_a",
+      "modified": 1729466822000,
+      "created": 1729466822000,
+      "url": "http://localhost:8083/realms/tenant-a/protocol/openid-connect/token",
+      "name": "1. Get Token (Tenant A)",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/x-www-form-urlencoded",
+        "params": [
+          {
+            "id": "pair_1",
+            "name": "client_id",
+            "value": "tenant-a-app",
+            "disabled": false
+          },
+          {
+            "id": "pair_2",
+            "name": "username",
+            "value": "user.a",
+            "disabled": false
+          },
+          {
+            "id": "pair_3",
+            "name": "password",
+            "value": "Password123",
+            "disabled": false
+          },
+          {
+            "id": "pair_4",
+            "name": "grant_type",
+            "value": "password",
+            "disabled": false
+          }
+        ]
+      },
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -100,
+      "_type": "request"
+    },
+    {
+      "_id": "req_2_call_api_a",
+      "parentId": "fld_tenant_a",
+      "modified": 1729466823000,
+      "created": 1729466823000,
+      "url": "http://localhost:8080/api/v1/test/secure",
+      "name": "2. Call Secure API (Tenant A)",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_header_1",
+          "name": "X-Tenant-ID",
+          "value": "tenant-a",
+          "disabled": false
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body' 'req_1_get_token_a' '$.access_token' 'never' %}",
+        "disabled": false,
+        "prefix": "Bearer"
+      },
+      "metaSortKey": -50,
+      "_type": "request"
+    },
+    {
+      "_id": "fld_tenant_b",
+      "parentId": "wrk_framework_auth",
+      "modified": 1729466824000,
+      "created": 1729466824000,
+      "name": "Tenant B",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -50,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_3_get_token_b",
+      "parentId": "fld_tenant_b",
+      "modified": 1729466825000,
+      "created": 1729466825000,
+      "url": "http://localhost:8083/realms/tenant-b/protocol/openid-connect/token",
+      "name": "1. Get Token (Tenant B)",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/x-www-form-urlencoded",
+        "params": [
+          {
+            "id": "pair_1",
+            "name": "client_id",
+            "value": "tenant-b-app",
+            "disabled": false
+          },
+          {
+            "id": "pair_2",
+            "name": "username",
+            "value": "user.b",
+            "disabled": false
+          },
+          {
+            "id": "pair_3",
+            "name": "password",
+            "value": "Password123",
+            "disabled": false
+          },
+          {
+            "id": "pair_4",
+            "name": "grant_type",
+            "value": "password",
+            "disabled": false
+          }
+        ]
+      },
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -100,
+      "_type": "request"
+    },
+    {
+      "_id": "req_4_call_api_b",
+      "parentId": "fld_tenant_b",
+      "modified": 1729466826000,
+      "created": 1729466826000,
+      "url": "http://localhost:8080/api/v1/test/secure",
+      "name": "2. Call Secure API (Tenant B)",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_header_1",
+          "name": "X-Tenant-ID",
+          "value": "tenant-b",
+          "disabled": false
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body' 'req_3_get_token_b' '$.access_token' 'never' %}",
+        "disabled": false,
+        "prefix": "Bearer"
+      },
+      "metaSortKey": -50,
+      "_type": "request"
+    },
+    {
+      "_id": "fld_failure_test",
+      "parentId": "wrk_framework_auth",
+      "modified": 1729466827000,
+      "created": 1729466827000,
+      "name": "Failure Tests",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": 0,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_5_fail_mismatch",
+      "parentId": "fld_failure_test",
+      "modified": 1729466828000,
+      "created": 1729466828000,
+      "url": "http://localhost:8080/api/v1/test/secure",
+      "name": "Fail (Token A, Header B)",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "id": "pair_header_1",
+          "name": "X-Tenant-ID",
+          "value": "tenant-b",
+          "disabled": false
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{% response 'body' 'req_1_get_token_a' '$.access_token' 'never' %}",
+        "disabled": false,
+        "prefix": "Bearer"
+      },
+      "metaSortKey": -100,
+      "_type": "request"
+    }
+  ]
+}
